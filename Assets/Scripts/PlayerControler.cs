@@ -16,24 +16,43 @@ public class PlayerControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _rigidbody= GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
         //Checks if the player is moving or not
-        if (_movementInput != Vector2.zero){
-            //checks for the potential collisions
-            int count = _rigidbody.Cast(
-                _movementInput, 
-                _movementFilter, 
-                _castCollisions, 
-                _movementSpeed * Time.fixedDeltaTime + _collisionOffset);
-            //Moves the player if their are no collisions
-            if (count == 0){
-                _rigidbody.MovePosition(_rigidbody.position + _movementInput * _movementSpeed * Time.fixedDeltaTime);
+        if (_movementInput != Vector2.zero)
+        {
+            bool success = TryMove(_movementInput);
+
+            //If the success failed move on the x axes
+            if (!success)
+            {
+                success = TryMove(new Vector2(_movementInput.x, 0));
+                //If success failed move on the y axes
+                if (!success)
+                {
+                    success = TryMove(new Vector2(0, _movementInput.y));
+                }
             }
         }
+    }
+    private bool TryMove(Vector2 direction)
+    {
+        //checks for the potential collisions
+        int count = _rigidbody.Cast(
+            direction,
+            _movementFilter,
+            _castCollisions,
+            _movementSpeed * Time.fixedDeltaTime + _collisionOffset);
+
+        //Moves the player if their are no collisions
+        if (count == 0){
+            _rigidbody.MovePosition(_rigidbody.position + direction * _movementSpeed * Time.fixedDeltaTime);
+            return true;
+        }
+        else { return false; }
     }
 
     /// <summary>
@@ -44,4 +63,5 @@ public class PlayerControler : MonoBehaviour
     {
         _movementInput = movementValue.Get<Vector2>();
     }
+
 }
