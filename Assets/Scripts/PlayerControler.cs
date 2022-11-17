@@ -12,11 +12,13 @@ public class PlayerControler : MonoBehaviour
 
     List<RaycastHit2D> _castCollisions = new List<RaycastHit2D>();
     Rigidbody2D _rigidbody;
+    Animator _animator;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -36,7 +38,12 @@ public class PlayerControler : MonoBehaviour
                     success = TryMove(new Vector2(0, _movementInput.y));
                 }
             }
-        }
+
+            //Checks if the player is moving for the animator
+            _animator.SetBool("isMoving", success);
+        }           
+        //If the player is not moving for the animator
+        else { _animator.SetBool("isMoving", false); }
     }
     private bool TryMove(Vector2 direction)
     {
