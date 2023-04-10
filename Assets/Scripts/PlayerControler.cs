@@ -10,6 +10,7 @@ public class PlayerControler : MonoBehaviour
     public float _collisionOffset = 0.05f;
     public ContactFilter2D _movementFilter;
     public bool _canMove = true;
+    public SwordAttack swordAttack;
 
     List<RaycastHit2D> _castCollisions = new List<RaycastHit2D>();
     Rigidbody2D _rigidbody;
@@ -51,11 +52,14 @@ public class PlayerControler : MonoBehaviour
             else { _animator.SetBool("isMoving", false); }
 
             //Sets the sprite to the direction the player is moving
-            if (_movementInput.x < 0)
+            if (_movementInput.x < 0) 
+            { 
                 _spriteRenderer.flipX = true;
-            if (_movementInput.x > 0)
+            }  
+            else if (_movementInput.x > 0) 
+            { 
                 _spriteRenderer.flipX = false;
-
+            }
         }
     }
     private bool TryMove(Vector2 direction){
@@ -97,6 +101,17 @@ public class PlayerControler : MonoBehaviour
     void OnFire(){
         //Starts the animator when the player attacks
         _animator.SetTrigger("swordAttack");
+    }
+
+    public void SwordAttack()
+    { 
+        LockMovement();
+        if (_spriteRenderer.flipX == true) 
+        {
+            swordAttack.AttackLeft();}
+        else 
+        { 
+            swordAttack.AttackRight();}
     }
 
     /// <summary>

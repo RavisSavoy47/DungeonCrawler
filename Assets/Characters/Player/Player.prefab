@@ -40,7 +40,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3881030680046180602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -273,6 +273,7 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   _canMove: 1
+  swordAttack: {fileID: 7750446597913379756}
 --- !u!50 &7988208734263606417
 Rigidbody2D:
   serializedVersion: 4
