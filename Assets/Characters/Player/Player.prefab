@@ -257,10 +257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df3d354f7ebe694fb5c9102b5942498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementInput: {x: 0, y: 0}
-  _movementSpeed: 1
-  _collisionOffset: 0.01
-  _movementFilter:
+  movementInput: {x: 0, y: 0}
+  movementSpeed: 1
+  collisionOffset: 0.05
+  movementFilter:
     useTriggers: 0
     useLayerMask: 0
     useDepth: 0
@@ -269,13 +269,14 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 0
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  _canMove: 1
+  canMove: 1
   swordAttack: {fileID: 7750446597913379756}
+  health: 3
 --- !u!50 &7988208734263606417
 Rigidbody2D:
   serializedVersion: 4

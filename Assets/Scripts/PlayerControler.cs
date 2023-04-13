@@ -11,11 +11,29 @@ public class PlayerControler : MonoBehaviour
     public ContactFilter2D movementFilter;
     public bool canMove = true;
     public SwordAttack swordAttack;
+    private bool isAlive = true;
 
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     Rigidbody2D _rigidbody;
     Animator animator;
     SpriteRenderer spriteRenderer;
+
+    public float Health
+    {
+        set
+        {
+            health = value;
+            //if the enemy died
+            if (health <= 0)
+            {
+                PlayerDied();
+                isAlive = false;
+            }
+        }
+        get { return health; }
+    }
+
+    public float health = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -27,38 +45,42 @@ public class PlayerControler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Checks if the player can move or not
-        if (canMove)
+        //Checks if player is alive
+        if (isAlive)
         {
-            //Checks if the player is moving or not
-            if (movementInput != Vector2.zero)
+            //Checks if the player can move or not
+            if (canMove)
             {
-                bool success = TryMove(movementInput);
-
-                //If the success failed move on the x axes
-                if (!success)
+                //Checks if the player is moving or not
+                if (movementInput != Vector2.zero)
                 {
-                    success = TryMove(new Vector2(movementInput.x, 0));
-                }
-                //If the success failed move on the y axes
-                if (!success)
-                {
-                    success = TryMove(new Vector2(0, movementInput.y));
-                }
-                //Checks if the player is moving for the animator
-                animator.SetBool("isMoving", success);
-            }
-            //If the player is not moving for the animator
-            else { animator.SetBool("isMoving", false); }
+                    bool success = TryMove(movementInput);
 
-            //Sets the sprite to the direction the player is moving
-            if (movementInput.x < 0) 
-            { 
-                spriteRenderer.flipX = true;
-            }  
-            else if (movementInput.x > 0) 
-            { 
-                spriteRenderer.flipX = false;
+                    //If the success failed move on the x axes
+                    if (!success)
+                    {
+                        success = TryMove(new Vector2(movementInput.x, 0));
+                    }
+                    //If the success failed move on the y axes
+                    if (!success)
+                    {
+                        success = TryMove(new Vector2(0, movementInput.y));
+                    }
+                    //Checks if the player is moving for the animator
+                    animator.SetBool("isMoving", success);
+                }
+                //If the player is not moving for the animator
+                else { animator.SetBool("isMoving", false); }
+
+                //Sets the sprite to the direction the player is moving
+                if (movementInput.x < 0)
+                {
+                    spriteRenderer.flipX = true;
+                }
+                else if (movementInput.x > 0)
+                {
+                    spriteRenderer.flipX = false;
+                }
             }
         }
     }
@@ -101,6 +123,13 @@ public class PlayerControler : MonoBehaviour
     void OnFire(){
         //Starts the animator when the player attacks
         animator.SetTrigger("swordAttack");
+    }
+    /// <summary>
+    /// Called when player is defeated
+    /// </summary>
+    public void PlayerDied()
+    {
+        animator.SetTrigger("died");
     }
 
     public void SwordAttack()
