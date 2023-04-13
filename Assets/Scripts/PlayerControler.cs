@@ -5,60 +5,60 @@ using UnityEngine.InputSystem;
 
 public class PlayerControler : MonoBehaviour
 {
-    public Vector2 _movementInput;
-    public float _movementSpeed = 1.0f;
-    public float _collisionOffset = 0.05f;
-    public ContactFilter2D _movementFilter;
-    public bool _canMove = true;
+    public Vector2 movementInput;
+    public float movementSpeed = 1.0f;
+    public float collisionOffset = 0.05f;
+    public ContactFilter2D movementFilter;
+    public bool canMove = true;
     public SwordAttack swordAttack;
 
-    List<RaycastHit2D> _castCollisions = new List<RaycastHit2D>();
+    List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     Rigidbody2D _rigidbody;
-    Animator _animator;
-    SpriteRenderer _spriteRenderer;
+    Animator animator;
+    SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
         //Checks if the player can move or not
-        if (_canMove)
+        if (canMove)
         {
             //Checks if the player is moving or not
-            if (_movementInput != Vector2.zero)
+            if (movementInput != Vector2.zero)
             {
-                bool success = TryMove(_movementInput);
+                bool success = TryMove(movementInput);
 
                 //If the success failed move on the x axes
                 if (!success)
                 {
-                    success = TryMove(new Vector2(_movementInput.x, 0));
+                    success = TryMove(new Vector2(movementInput.x, 0));
                 }
                 //If the success failed move on the y axes
                 if (!success)
                 {
-                    success = TryMove(new Vector2(0, _movementInput.y));
+                    success = TryMove(new Vector2(0, movementInput.y));
                 }
                 //Checks if the player is moving for the animator
-                _animator.SetBool("isMoving", success);
+                animator.SetBool("isMoving", success);
             }
             //If the player is not moving for the animator
-            else { _animator.SetBool("isMoving", false); }
+            else { animator.SetBool("isMoving", false); }
 
             //Sets the sprite to the direction the player is moving
-            if (_movementInput.x < 0) 
+            if (movementInput.x < 0) 
             { 
-                _spriteRenderer.flipX = true;
+                spriteRenderer.flipX = true;
             }  
-            else if (_movementInput.x > 0) 
+            else if (movementInput.x > 0) 
             { 
-                _spriteRenderer.flipX = false;
+                spriteRenderer.flipX = false;
             }
         }
     }
@@ -69,14 +69,14 @@ public class PlayerControler : MonoBehaviour
             //checks for the potential collisions
             int count = _rigidbody.Cast(
                 direction,
-                _movementFilter,
-                _castCollisions,
-                _movementSpeed * Time.fixedDeltaTime + _collisionOffset);
+                movementFilter,
+                castCollisions,
+                movementSpeed * Time.fixedDeltaTime + collisionOffset);
 
             //Moves the player if their are no collisions
             if (count == 0)
             {
-                _rigidbody.MovePosition(_rigidbody.position + direction * _movementSpeed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + direction * movementSpeed * Time.fixedDeltaTime);
                 return true;
             }
             else { return false; }
@@ -92,7 +92,7 @@ public class PlayerControler : MonoBehaviour
     /// <param name="movementValue">how much to move the player by</param>
     void OnMove(InputValue movementValue)
     {
-        _movementInput = movementValue.Get<Vector2>();
+        movementInput = movementValue.Get<Vector2>();
     }
 
     /// <summary>
@@ -100,13 +100,15 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     void OnFire(){
         //Starts the animator when the player attacks
-        _animator.SetTrigger("swordAttack");
+        animator.SetTrigger("swordAttack");
     }
 
     public void SwordAttack()
     { 
+        //Stops the players movement
         LockMovement();
-        if (_spriteRenderer.flipX == true) 
+        //Gets what direction the sprite is facing
+        if (spriteRenderer.flipX == true) 
         {
             swordAttack.AttackLeft();}
         else 
@@ -114,17 +116,25 @@ public class PlayerControler : MonoBehaviour
             swordAttack.AttackRight();}
     }
 
+    public void EndSwordAttack()
+    {
+        //Unlocks the players movement
+        UnLockMovement();
+        //Stops the attack 
+        swordAttack.StopAttack();
+    }
+
     /// <summary>
     /// Stops the players movement
     /// </summary>
     public void LockMovement(){
-        _canMove = false;
+        canMove = false;
     }
 
     /// <summary>
     /// Lets the player move
     /// </summary>
     public void UnLockMovement(){
-        _canMove = true;
+        canMove = true; 
     }
 }

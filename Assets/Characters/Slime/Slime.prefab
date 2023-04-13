@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 827552187277908945}
   - component: {fileID: 859993343859512035}
   - component: {fileID: 3811470490018967099}
-  - component: {fileID: 7920952603273690240}
+  - component: {fileID: 4390691366296899294}
+  - component: {fileID: 187952101400894270}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -118,13 +119,13 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.000846062, y: -0.01951869}
   m_Size: {x: 0.138391, y: 0.138391}
   m_Direction: 0
---- !u!114 &7920952603273690240
+--- !u!114 &4390691366296899294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,6 +134,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7171471141959218222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ead2fd5163b394f91cf08a1b8ba54f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1651ae7f8c5d1cd48a578d4d2f92ad94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 3
+--- !u!95 &187952101400894270
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7171471141959218222}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 301672c1e5529f847901da472835dbd1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

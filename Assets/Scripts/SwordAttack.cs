@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SwordAttack : MonoBehaviour
 {
-    Collider2D swordCollider;
+    public Collider2D swordCollider;
     Vector2 attackOffset;
+    public float damage = 3;
 
     // Start is called before the first frame update
     void Start()
     {
-        swordCollider = GetComponent<Collider2D>();
         attackOffset = transform.position;
     }
 
@@ -20,7 +20,7 @@ public class SwordAttack : MonoBehaviour
     public void AttackRight()
     {
         swordCollider.enabled = true;
-        transform.position = attackOffset;
+        transform.localPosition = attackOffset;
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class SwordAttack : MonoBehaviour
     public void AttackLeft()
     {
         swordCollider.enabled = true;
-        transform.position = new Vector3(attackOffset.x * -1, attackOffset.y);
+        transform.localPosition = new Vector3(attackOffset.x * -1, attackOffset.y);
     }
 
     /// <summary>
@@ -38,5 +38,21 @@ public class SwordAttack : MonoBehaviour
     public void StopAttack()
     { 
         swordCollider.enabled = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //Checks the collision tag for an enemy
+        if (other.tag == "Enemy")
+        {
+            //Gets the enemy that it collided with
+            Enemy enemy = other.GetComponent<Enemy>();
+
+            //Checks if the enemy exsits 
+            if (enemy != null) 
+            {
+                enemy.Health -= damage;
+            }
+        }
     }
 }
