@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public float collisionOffset = 0.55f;
     public float damage = 1;
     private bool isAlive = true;
-
+    public float deathTime = 0;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
@@ -88,6 +88,18 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    public void Update()
+    {
+        //if enemy is dead
+        if (!isAlive) 
+        {
+            //Removes the enemy after time passes
+            deathTime += .01f;
+            if (deathTime > 30) { RemoveEnemy(); }
+        }
+        
+    }
     private bool TryMove(Vector2 direction)
     {
         //Checks if there is no movement
@@ -128,16 +140,20 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //Checks the collision tag for an enemy
-        if (other.tag == "Player")
+        //Checks if enemy is still alive
+        if (isAlive)
         {
-            //Gets the enemy that it collided with
-            PlayerControler player = other.GetComponent<PlayerControler>();
-
-            //Checks if the enemy exsits 
-            if (player != null)
+            //Checks the collision tag for an enemy
+            if (other.tag == "Player")
             {
-                player.Health -= damage;
+                //Gets the enemy that it collided with
+                PlayerControler player = other.GetComponent<PlayerControler>();
+
+                //Checks if the enemy exsits 
+                if (player != null)
+                {
+                    player.Health -= damage;
+                }
             }
         }
     }
