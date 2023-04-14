@@ -15,13 +15,15 @@ public class Enemy : MonoBehaviour
     public float deathTime = 0;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
-
+    public HealthBar healthBar;
     SpriteRenderer spriteRenderer;
     Rigidbody2D _rigidbody;
+    public float maxHealth;
     public float Health
     {
         set{
             health = value;
+
             //if the enemy died
             if (health <= 0)
             {
@@ -36,9 +38,12 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        _rigidbody= GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer= GetComponent<SpriteRenderer>();
+
+        health = maxHealth;
+        healthBar.SetHealth(maxHealth, health);
     }
 
     // Update is called once per frame
