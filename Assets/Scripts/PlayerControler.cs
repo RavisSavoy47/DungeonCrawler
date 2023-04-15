@@ -17,7 +17,8 @@ public class PlayerControler : MonoBehaviour
     Rigidbody2D _rigidbody;
     Animator animator;
     SpriteRenderer spriteRenderer;
-
+    public float maxHealth;
+    public HealthBar healthBar;
     public float Health
     {
         set
@@ -41,6 +42,9 @@ public class PlayerControler : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        health = maxHealth;
+        healthBar.SetHealth(maxHealth, health);
     }
 
     private void FixedUpdate()

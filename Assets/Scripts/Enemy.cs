@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     Animator animator;
     public float speed = 0.5f;
     public float viewrange = 1.0f;
+    public float attackrange = 0.5f;
     public PlayerControler player;
     public float collisionOffset = 0.55f;
     public float damage = 1;
@@ -19,6 +20,10 @@ public class Enemy : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Rigidbody2D _rigidbody;
     public float maxHealth;
+    public SwordAttack swordAttack;
+    public bool canAttack = false;
+    public bool canMove;
+    
     public float Health
     {
         set{
@@ -63,20 +68,53 @@ public class Enemy : MonoBehaviour
                 //Checks if the player is alive
                 if(player.Health > 0 )
                 {
-                    //moves the enemy 
-                    bool success = TryMove(transform.position);
+                    //Checks if the enemy has an attack
+                    if(!canAttack)
+                    {
+                        //moves the enemy 
+                        bool success = TryMove(transform.position);
 
-                    //If the success failed move on the x axes
-                    if (!success)
-                    {
-                        success = TryMove(new Vector2(transform.position.x, 0));
+                        //If the success failed move on the x axes
+                        if (!success)
+                        {
+                            success = TryMove(new Vector2(transform.position.x, 0));
+                        }
+                        //If the success failed move on the y axes
+                        if (!success)
+                        {
+                            success = TryMove(new Vector2(0, transform.position.y));
+                        }
+                        animator.SetBool("isMoving", true);
                     }
-                    //If the success failed move on the y axes
-                    if (!success)
+                    else 
                     {
-                        success = TryMove(new Vector2(0, transform.position.y));
+                        //Checks if the enemy can move
+                        if(canMove)
+                        {
+                            //moves the enemy 
+                            bool success = TryMove(transform.position);
+
+                            //If the success failed move on the x axes
+                            if (!success)
+                            {
+                                success = TryMove(new Vector2(transform.position.x, 0));
+                            }
+                            //If the success failed move on the y axes
+                            if (!success)
+                            {
+                                success = TryMove(new Vector2(0, transform.position.y));
+                            }
+                            animator.SetBool("isMoving", true);
+                        }
+                        else { animator.SetBool("isMoving", false); }
+
+                        if (Vector2.Distance(playerPosition, transform.position) < attackrange)
+                        {
+                            //Starts the animator when the player attacks
+                            animator.SetTrigger("enemyAttack");
+                        }
                     }
-                    animator.SetBool("isMoving", true);
+                    
                 }
                 else { animator.SetBool("isMoving", false); }
             }
@@ -132,7 +170,7 @@ public class Enemy : MonoBehaviour
             else 
             {
                 //moves the enemy along the wall
-                _rigidbody.MovePosition(_rigidbody.position + direction * speed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + direction.normalized * displacement * speed * Time.fixedDeltaTime);
                 return false; 
             }
         }
@@ -158,9 +196,33 @@ public class Enemy : MonoBehaviour
                 if (player != null)
                 {
                     player.Health -= damage;
+                    player.healthBar.SetHealth(player.maxHealth, player.health);
                 }
             }
         }
+    }
+
+    public void enemyAttack()
+    {
+        //Stops the enmey movement
+        LockMovement();
+        //Gets what direction the sprite is facing
+        if (spriteRenderer.flipX == true)
+        {
+            swordAttack.AttackLeft();
+        }
+        else
+        {
+            swordAttack.AttackRight();
+        }
+    }
+
+    public void EndEnemyAttack()
+    {
+        //Unlocks the enemy movement
+        UnLockMovement();
+        //Stops the attack 
+        swordAttack.StopAttack();
     }
 
     /// <summary>
@@ -177,5 +239,20 @@ public class Enemy : MonoBehaviour
     public void RemoveEnemy()
     {
         Destroy(gameObject);
+    }
+    /// <summary>
+    /// Stops the enemy movement
+    /// </summary>
+    public void LockMovement()
+    {
+        canMove = false;
+    }
+
+    /// <summary>
+    /// Lets the enemy move
+    /// </summary>
+    public void UnLockMovement()
+    {
+        canMove = true;
     }
 }
