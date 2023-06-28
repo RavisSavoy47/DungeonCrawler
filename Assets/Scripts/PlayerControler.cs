@@ -19,6 +19,8 @@ public class PlayerControler : MonoBehaviour
     SpriteRenderer spriteRenderer;
     public float maxHealth;
     public HealthBar healthBar;
+    public float currentExp;
+    public float maxExp = 10;
     public float Health
     {
         set
@@ -45,6 +47,16 @@ public class PlayerControler : MonoBehaviour
 
         health = maxHealth;
         healthBar.SetHealth(maxHealth, health);
+    }
+
+    private void Update()
+    {
+        if (currentExp == maxExp)
+        {
+            health = 5;
+            currentExp = 0;
+            maxExp += 10;
+        }
     }
 
     private void FixedUpdate()

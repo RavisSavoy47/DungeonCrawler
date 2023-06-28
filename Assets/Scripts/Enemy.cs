@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     public SwordAttack swordAttack;
     public bool canAttack = false;
     public bool canMove;
-    
+    public float expDrop;
     public float Health
     {
         set{
@@ -139,10 +139,21 @@ public class Enemy : MonoBehaviour
         {
             //Removes the enemy after time passes
             deathTime += .01f;
-            if (deathTime > 30) { RemoveEnemy(); }
+            if (deathTime > 5)
+            {
+                RemoveEnemy();
+                IncreasePLayerExp();
+            }
         }
-        
     }
+
+    private void IncreasePLayerExp()
+    {
+        player.currentExp += expDrop;
+        player.healthBar.GainExp(player.maxExp, player.currentExp);
+    }
+
+
     private bool TryMove(Vector2 direction)
     {
         //Checks if there is no movement

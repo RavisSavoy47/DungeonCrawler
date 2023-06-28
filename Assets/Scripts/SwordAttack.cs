@@ -76,12 +76,11 @@ public class SwordAttack : MonoBehaviour
             {
                 //Gets the enemy that it collided with
                 Enemy enemy = other.GetComponent<Enemy>();
-
                 //Checks if the enemy exsits 
                 if (enemy != null)
                 {
                     enemy.Health -= damage;
-                    enemy.healthBar.SetHealth(enemy.maxHealth, enemy.health);
+                    enemy.healthBar.SetHealth(enemy.maxHealth, enemy.health);                   
                 }
             }
         }
