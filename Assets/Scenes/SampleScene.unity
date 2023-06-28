@@ -5253,7 +5253,7 @@ PrefabInstance:
       objectReference: {fileID: 1996687051}
     - target: {fileID: 2983027092401908353, guid: e9c422f152b18f041a3a6ee358733fa1, type: 3}
       propertyPath: expDrop
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2983027092401908353, guid: e9c422f152b18f041a3a6ee358733fa1, type: 3}
       propertyPath: attackrange
@@ -5368,7 +5368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4390691366296899294, guid: e12b765d253d7f6448b3fb39d641b67f, type: 3}
       propertyPath: expDrop
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7171471141959218222, guid: e12b765d253d7f6448b3fb39d641b67f, type: 3}
       propertyPath: m_Name
@@ -5511,6 +5511,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8745291337866470153, guid: 202d73abddfd95248a4b4f2c5b0c91dd, type: 3}
       propertyPath: health
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8745291337866470153, guid: 202d73abddfd95248a4b4f2c5b0c91dd, type: 3}
+      propertyPath: maxHealth
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []

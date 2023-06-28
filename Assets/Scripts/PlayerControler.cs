@@ -51,11 +51,13 @@ public class PlayerControler : MonoBehaviour
 
     private void Update()
     {
-        if (currentExp == maxExp)
+        if (currentExp >= maxExp)
         {
-            health = 5;
+            health = 5;            
             currentExp = 0;
             maxExp += 10;
+            healthBar.GainExp(maxExp, currentExp);
+            healthBar.SetHealth(maxHealth, health);
         }
     }
 
