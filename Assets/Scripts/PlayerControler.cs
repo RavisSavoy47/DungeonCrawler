@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerControler : MonoBehaviour
     public bool canMove = true;
     public SwordAttack swordAttack;
     private bool isAlive = true;
+    public Canvas canvas;
 
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     Rigidbody2D _rigidbody;
@@ -21,6 +23,7 @@ public class PlayerControler : MonoBehaviour
     public HealthBar healthBar;
     public float currentExp;
     public float maxExp = 10;
+    public float cost = 10;
     public float Health
     {
         set
@@ -59,6 +62,10 @@ public class PlayerControler : MonoBehaviour
             healthBar.GainExp(maxExp, currentExp);
             healthBar.SetHealth(maxHealth, health);
         }
+        if (Input.GetKeyDown("m"))
+            canvas.enabled = true;
+        if (Input.GetKeyUp("m"))
+            canvas.enabled = false;
     }
 
     private void FixedUpdate()
