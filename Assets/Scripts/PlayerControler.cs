@@ -13,6 +13,7 @@ public class PlayerControler : MonoBehaviour
     public bool canMove = true;
     public SwordAttack swordAttack;
     private bool isAlive = true;
+    private bool menu;
     public Canvas canvas;
 
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
@@ -62,10 +63,18 @@ public class PlayerControler : MonoBehaviour
             healthBar.GainExp(maxExp, currentExp);
             healthBar.SetHealth(maxHealth, health);
         }
-        if (Input.GetKeyDown("m"))
+
+        if (Input.GetKeyDown("m") & menu == false)
+        {
             canvas.enabled = true;
-        if (Input.GetKeyUp("m"))
+            menu = true;
+        }
+        else if (Input.GetKeyDown("m") & menu == true)
+        {
             canvas.enabled = false;
+            menu = false;
+        }
+            
     }
 
     private void FixedUpdate()
